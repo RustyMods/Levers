@@ -23,6 +23,8 @@ public class MeshData
     public string sourcePrefab;
     public string childPath;
 
+    private bool loaded;
+
     public MeshData(GameObject prefab, string sourcePrefab, string childPath)
     {
         this.prefab = prefab;
@@ -33,6 +35,7 @@ public class MeshData
 
     public void Replace()
     {
+        if (loaded) return;
         if (!prefab.TryGetComponent(out MeshFilter meshFilter))
         {
             Debug.LogWarning(prefab.name + " does not have mesh filter");
@@ -68,5 +71,7 @@ public class MeshData
         {
             meshRenderer.sharedMaterials = renderer.sharedMaterials;
         }
+
+        loaded = true;
     }
 }

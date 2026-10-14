@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Text;
 using UnityEngine;
 
@@ -33,12 +32,29 @@ public class Lever : MonoBehaviour, Hoverable, Interactable
     public void FindConnection()
     {
         if (m_connectedDoor != null) return;
-        
+
+        if (TryFindSavedDoor()) return;
         if (DoorExtension.TryGetNearestDoor(transform.position, m_maxDoorDistance, out var ext))
         {
             m_connectedDoor = ext.m_door;
             ext.m_connectedLever = this;
+            m_nview.GetZDO().Set("RustyMods.Lever.Target", m_connectedDoor.m_nview.GetZDO().m_uid);
         }
+    }
+
+    private bool TryFindSavedDoor()
+    {
+        var target = m_nview.GetZDO().GetZDOID("RustyMods.Lever.Target");
+        if (target == ZDOID.None) return false;
+        var prefab = ZNetScene.instance.FindInstance(target);
+        if (prefab != null && prefab.TryGetComponent(out DoorExtension ext))
+        {
+            m_connectedDoor = ext.m_door;
+            ext.m_connectedLever = this;
+            return true;
+        }
+
+        return false;
     }
 
     public void StartConnectionEffect(Door door, float timeout = 1f)

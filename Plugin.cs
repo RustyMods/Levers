@@ -6,7 +6,6 @@ using BepInEx.Logging;
 using HarmonyLib;
 using PieceManager;
 using ServerSync;
-using UnityEngine;
 
 namespace Levers;
 
@@ -15,7 +14,7 @@ public class LeversPlugin : BaseUnityPlugin
 {
     internal const string ModName = "Levers";
     internal const string ModVersion = "1.0.0";
-    internal const string Author = "azumatt";
+    internal const string Author = "RustyMods";
     private const string ModGUID = Author + "." + ModName;
     private static readonly string ConfigFileName = ModGUID + ".cfg";
     private static readonly string ConfigFileFullPath = Paths.ConfigPath + Path.DirectorySeparatorChar + ConfigFileName;
@@ -27,12 +26,9 @@ public class LeversPlugin : BaseUnityPlugin
     private static readonly ConfigSync ConfigSync = new(ModGUID)
         { DisplayName = ModName, CurrentVersion = ModVersion, MinimumRequiredVersion = ModVersion };
 
-    public static LeversPlugin instance;
+    public static LeversPlugin instance = null!;
     
     private static ConfigEntry<Toggle> _serverConfigLocked = null!;
-
-    public static BuildPiece piece_floor_lever;
-    public static BuildPiece piece_wall_lever;
 
     public enum Toggle
     {
@@ -63,7 +59,7 @@ public class LeversPlugin : BaseUnityPlugin
 
     private static void SetupWallPiece()
     {
-        piece_wall_lever = new BuildPiece(
+        var piece_wall_lever = new BuildPiece(
             "levers_bundle", 
             "piece_lever_wall");
         
@@ -111,7 +107,7 @@ public class LeversPlugin : BaseUnityPlugin
 
     private static void SetupFloorPiece()
     {
-        piece_floor_lever = new BuildPiece(
+        var piece_floor_lever = new BuildPiece(
             "levers_bundle", 
             "piece_lever_floor");
         
