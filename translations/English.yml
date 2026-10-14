@@ -1,3 +1,5 @@
 piece_floor_lever: Floor Lever
+piece_floor_lever_desc: Connects to nearest door
 piece_wall_lever: Wall Lever
+piece_wall_lever_desc: Connects to nearest door
 piece_lever: Lever

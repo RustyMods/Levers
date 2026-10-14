@@ -74,7 +74,7 @@ public class LeversPlugin : BaseUnityPlugin
         
         piece_wall_lever.Prefab.AddComponent<Lever>();
         piece_wall_lever.Name.English("Wall Lever");
-        piece_wall_lever.Description.English("");
+        piece_wall_lever.Description.English("Connects to nearest door");
         piece_wall_lever.Category.Set(BuildPieceCategory.Misc);
         piece_wall_lever.Usage.Set(Piece.UsageTagFlags.Building);
         piece_wall_lever.Crafting.Set(CraftingTable.Workbench);
@@ -122,7 +122,7 @@ public class LeversPlugin : BaseUnityPlugin
         
         piece_floor_lever.Prefab.AddComponent<Lever>();
         piece_floor_lever.Name.English("Floor Lever");
-        piece_floor_lever.Description.English("");
+        piece_floor_lever.Description.English("Connects to nearest door");
         piece_floor_lever.Category.Set(BuildPieceCategory.Misc);
         piece_floor_lever.Usage.Set(Piece.UsageTagFlags.Building);
         piece_floor_lever.Crafting.Set(CraftingTable.Workbench);
