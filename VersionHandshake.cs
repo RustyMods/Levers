@@ -15,7 +15,8 @@ namespace Levers
         {
             // Register version check call
             LeversPlugin.LeversLogger.LogDebug("Registering version RPC handler");
-            peer.m_rpc.Register($"{LeversPlugin.ModName}_VersionCheck", new Action<ZRpc, ZPackage>(RpcHandlers.RPC_Levers_Version));
+            peer.m_rpc.Register($"{LeversPlugin.ModName}_VersionCheck",
+                new Action<ZRpc, ZPackage>(RpcHandlers.RPC_Levers_Version));
 
             // Make calls to check versions
             LeversPlugin.LeversLogger.LogDebug("Invoking version check");
@@ -32,14 +33,16 @@ namespace Levers
         {
             if (!__instance.IsServer() || RpcHandlers.ValidatedPeers.Contains(rpc)) return true;
             // Disconnect peer if they didn't send mod version at all
-            LeversPlugin.LeversLogger.LogWarning($"Peer ({rpc.m_socket.GetHostName()}) never sent version or couldn't due to previous disconnect, disconnecting");
+            LeversPlugin.LeversLogger.LogWarning(
+                $"Peer ({rpc.m_socket.GetHostName()}) never sent version or couldn't due to previous disconnect, disconnecting");
             rpc.Invoke("Error", 3);
             return false; // Prevent calling underlying method
         }
 
         private static void Postfix(ZNet __instance)
         {
-            ZRoutedRpc.instance.InvokeRoutedRPC(ZRoutedRpc.instance.GetServerPeerID(), $"{LeversPlugin.ModName}RequestAdminSync",
+            ZRoutedRpc.instance.InvokeRoutedRPC(ZRoutedRpc.instance.GetServerPeerID(),
+                $"{LeversPlugin.ModName}RequestAdminSync",
                 new ZPackage());
         }
     }
@@ -65,7 +68,8 @@ namespace Levers
         {
             if (!__instance.IsServer()) return;
             // Remove peer from validated list
-            LeversPlugin.LeversLogger.LogInfo($"Peer ({peer.m_rpc.m_socket.GetHostName()}) disconnected, removing from validated list");
+            LeversPlugin.LeversLogger.LogInfo(
+                $"Peer ({peer.m_rpc.m_socket.GetHostName()}) disconnected, removing from validated list");
             _ = RpcHandlers.ValidatedPeers.Remove(peer.m_rpc);
         }
     }
@@ -81,10 +85,12 @@ namespace Levers
             LeversPlugin.LeversLogger.LogInfo($"Version check, local: {LeversPlugin.ModVersion},  remote: {version}");
             if (version != LeversPlugin.ModVersion)
             {
-                LeversPlugin.ConnectionError = $"{LeversPlugin.ModName} Installed: {LeversPlugin.ModVersion}\n Needed: {version}";
+                LeversPlugin.ConnectionError =
+                    $"{LeversPlugin.ModName} Installed: {LeversPlugin.ModVersion}\n Needed: {version}";
                 if (!ZNet.instance.IsServer()) return;
                 // Different versions - force disconnect client from server
-                LeversPlugin.LeversLogger.LogWarning($"Peer ({rpc.m_socket.GetHostName()}) has incompatible version, disconnecting...");
+                LeversPlugin.LeversLogger.LogWarning(
+                    $"Peer ({rpc.m_socket.GetHostName()}) has incompatible version, disconnecting...");
                 rpc.Invoke("Error", 3);
             }
             else

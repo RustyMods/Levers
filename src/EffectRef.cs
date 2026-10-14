@@ -3,15 +3,10 @@ using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
 
-namespace ClassSystem;
+namespace Levers;
 
 public class EffectListRef
 {
-    [HarmonyPatch(typeof(ZNetScene), nameof(ZNetScene.Awake))]
-    private static class ZNetScene_Awake_Patch
-    {
-        private static void Postfix() => EffectListRef.LoadAll();
-    }
     private static readonly List<EffectListRef> m_effectListRefs = [];
 
     public static void LoadAll()
@@ -25,6 +20,8 @@ public class EffectListRef
     
     public readonly EffectList m_effectList = new  EffectList();
     public readonly EffectRef[] m_effectRefs;
+    
+    public static implicit operator EffectList(EffectListRef effectListRef) => effectListRef.m_effectList;
 
     public EffectListRef(params string[] effectNames)
     {

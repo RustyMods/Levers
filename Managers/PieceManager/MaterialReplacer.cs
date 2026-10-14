@@ -22,7 +22,8 @@ namespace PieceManager
             ObjectToSwap = new Dictionary<GameObject, bool>();
             ObjectsForShaderReplace = new Dictionary<GameObject, ShaderType>();
             Harmony harmony = new Harmony("org.bepinex.helpers.PieceManager");
-            harmony.Patch(AccessTools.DeclaredMethod(typeof(ZoneSystem), nameof(ZoneSystem.Start)), postfix: new HarmonyMethod(typeof(MaterialReplacer), nameof(ReplaceAllMaterialsWithOriginal)));
+            harmony.Patch(AccessTools.DeclaredMethod(typeof(ZoneSystem), nameof(ZoneSystem.Start)),
+                postfix: new HarmonyMethod(typeof(MaterialReplacer), nameof(ReplaceAllMaterialsWithOriginal)));
         }
 
         public enum ShaderType
@@ -64,7 +65,8 @@ namespace PieceManager
         [HarmonyPriority(Priority.VeryHigh)]
         private static void ReplaceAllMaterialsWithOriginal()
         {
-            if (UnityEngine.SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null || hasRun) return;
+            if (UnityEngine.SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null ||
+                hasRun) return;
 
             if (OriginalMaterials.Count == 0) GetAllMaterials();
 
@@ -113,7 +115,8 @@ namespace PieceManager
             var renderers = go.GetComponentsInChildren<Renderer>(true);
             foreach (var renderer in renderers)
             {
-                var newMaterials = renderer.sharedMaterials.Select(material => material == null ? null : ReplaceMaterial(material, isJotunnMock)).ToArray();
+                var newMaterials = renderer.sharedMaterials
+                    .Select(material => material == null ? null : ReplaceMaterial(material, isJotunnMock)).ToArray();
                 renderer.sharedMaterials = newMaterials;
             }
         }
@@ -167,7 +170,11 @@ namespace PieceManager
                 case ShaderType.RugShader: return FindShaderWithName(orig, "Custom/Rug");
                 case ShaderType.GrassShader: return FindShaderWithName(orig, "Custom/Grass");
                 case ShaderType.CustomCreature: return FindShaderWithName(orig, "Custom/Creature");
-                case ShaderType.UseUnityShader: return FindShaderWithName(orig, FindShaderWithName(orig, originalShaderName) != null ? originalShaderName : "ToonDeferredShading2017");
+                case ShaderType.UseUnityShader:
+                    return FindShaderWithName(orig,
+                        FindShaderWithName(orig, originalShaderName) != null
+                            ? originalShaderName
+                            : "ToonDeferredShading2017");
                 default: return FindShaderWithName(orig, "Standard");
             }
         }
